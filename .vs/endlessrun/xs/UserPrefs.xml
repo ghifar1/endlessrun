@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{136845A4-917A-58CB-E145-0E7C973ECD49}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CharacterControl.cs">
+    <Files>
+      <File FileName="Assets/Scripts/GameControl.cs" Line="137" Column="6" />
+      <File FileName="Assets/Scripts/CharacterControl.cs" Line="143" Column="32" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="endlessrun" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="CharacterControl.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="56697bd1-c753-421a-9c3f-4d985664641f" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
