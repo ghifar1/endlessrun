@@ -98,7 +98,7 @@ public class GameControl : MonoBehaviour
         currCountdown = countdownCount;
         countdownText.text = currCountdown.ToString();
         countdownText.gameObject.SetActive(true);
-        Invoke("Countingdown", 1);
+        Invoke("CountingDown", 1);
     }
 
     public void GameOver()
@@ -108,6 +108,22 @@ public class GameControl : MonoBehaviour
         SaveScore();
     }
 
+    void CountingDown()
+    {
+        currCountdown--;
+        countdownText.text = currCountdown.ToString();
+        if(currCountdown > 0)
+        {
+            Invoke("CountingDown", 1);
+        }
+        else
+        {
+            countdownText.gameObject.SetActive(false);
+            myChar.StartRun();
+        }
+    }
+    
+
     public void SaveScore()
     {
         if (score > PlayerPrefs.GetInt("highscore"))
@@ -115,6 +131,30 @@ public class GameControl : MonoBehaviour
             PlayerPrefs.SetInt("highscore", score);
             PlayerPrefs.Save();
         }
+    }
+
+    public void OnApplicationPause(bool pause)
+    {
+        pausePanel.SetActive(pause);
+        if(pause == true)
+        {
+            Time.timeScale = 0;
+        } else
+        {
+            Time.timeScale = 1;
+        }
+    }
+
+    public void Retry()
+    {
+        SaveScore();
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void Exit()
+    {
+        SaveScore();
+        SceneManager.LoadScene("Menu");
     }
 
     void PopulateLifeImage()
