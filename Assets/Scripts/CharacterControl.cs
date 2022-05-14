@@ -71,6 +71,7 @@ public class CharacterControl : MonoBehaviour
                 turnSFX.Play();
                 lastLaneChange = Time.time;
                 lanePos += 1;
+                lerpPos += laneXPosition;
             }
             isTurningRight = false;
         }
