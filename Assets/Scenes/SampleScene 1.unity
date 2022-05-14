@@ -22295,6 +22295,11 @@ PrefabInstance:
       propertyPath: impactSFX
       value: 
       objectReference: {fileID: 137181387}
+    - target: {fileID: 907250716773842596, guid: 392252bb518604501bc9076edb57906a,
+        type: 3}
+      propertyPath: laneXPosition
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 907250717429991117, guid: 392252bb518604501bc9076edb57906a,
         type: 3}
       propertyPath: m_LocalRotation.w
