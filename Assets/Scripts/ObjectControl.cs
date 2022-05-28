@@ -8,7 +8,7 @@ public class ObjectControl : MonoBehaviour
 
     private void OnEnable()
     {
-        for (int i = 0; i < pool.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
         }
