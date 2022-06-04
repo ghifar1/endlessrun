@@ -136,6 +136,7 @@ public class CharacterControl : MonoBehaviour
             GameControl.current.Invoke("GameOver", 2);
 
         }
+
     }
 
     public void StartRun()
@@ -144,13 +145,13 @@ public class CharacterControl : MonoBehaviour
         anim.SetTrigger("run");
     }
 
-    public void StartRollback()
+    public void StartRollBack()
     {
         isRollback = true;
-        Invoke("StopRollback", rollbackDuration);
+        Invoke("StopRollBack", rollbackDuration);
     }
 
-    void StopRollback()
+    void StopRollBack()
     {
         isRollback = false;
         anim.SetTrigger("idle");

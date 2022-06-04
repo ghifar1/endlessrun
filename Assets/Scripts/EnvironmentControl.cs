@@ -17,7 +17,7 @@ public class EnvironmentControl : MonoBehaviour
     public GameObject[] sideObstacles;
     public GameObject[] points;
 
-    Vector3 platformEndPosition, platformStartPosition;
+    public Vector3 platformEndPosition, platformStartPosition;
 
 
     // Start is called before the first frame update
@@ -74,11 +74,13 @@ public class EnvironmentControl : MonoBehaviour
 
     void PopulatePool(Transform pool, GameObject[] objects, int amount)
     {
+        
         for(int i=0; i < objects.Length; i++)
         {
             for(int j=0; j < amount; j++)
             {
                 GameObject obj = Instantiate(objects[i], pool);
+                Debug.Log(obj);
                 obj.GetComponent<ObjectControl>().pool = pool;
                 obj.SetActive(false);
             }
