@@ -1,41 +1,53 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CharacterControl : MonoBehaviour
 {
-    public int life;
+    #region Event
+
+    public Action<bool> Hit;
+    public Action<bool> Countdown;
+    public Action Score;
+    
+    #endregion
+    
+    [Header("Unity Component")]
+    private Rigidbody rbody;
+    public Animator anim;
 
     [Header("Movement Variables")]
-    public float jumpPower;
+    [SerializeField]private float jumpPower;
     public bool isRunning;
     public bool isRollback;
-    public float rollbackDuration;
+    [SerializeField] private float rollbackDuration;
 
     [Header("Turning Variables")]
-    public float lerpTime;
-    public float laneXPosition;
+    [SerializeField]private float lerpTime;
+    [SerializeField]private float laneXPosition;
     float lerpPos;
     float lastLaneChange;
     int lanePos = 0;
-    Rigidbody rbody;
-    Animator anim;
-    bool isJumping, isTurningRight, isTurningLeft;
+
+    private bool isJumping, isTurningRight, isTurningLeft;
+
+    public bool isHit = false;
+    public bool isStartCountdown;
 
     [Header("SFX")]
-    public AudioSource coinSFX;
-    public AudioSource impactSFX;
-    public AudioSource jumpSFX;
-    public AudioSource stepSFX;
-    public AudioSource turnSFX;
-
+    [SerializeField]private AudioSource coinSFX;
+    [SerializeField]private AudioSource impactSFX;
+    [SerializeField]private AudioSource jumpSFX;
+    [SerializeField]private AudioSource stepSFX;
+    [SerializeField]private AudioSource turnSFX;
 
     // Start is called before the first frame update
     void Start()
     {
         rbody = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-
     }
 
     // Update is called once per frame
@@ -106,7 +118,8 @@ public class CharacterControl : MonoBehaviour
         {
             if(transform.position.y < 1)
             {
-                Flinch();
+                isHit = true;
+                Flinch(isHit);
             }
         }
     }
@@ -116,26 +129,22 @@ public class CharacterControl : MonoBehaviour
         if (other.tag == "coin") 
         {
             coinSFX.Play();
-            other.gameObject.SetActive(false);
-            GameControl.current.AddScore(1);
+			other.gameObject.SetActive(false);
+			AddScore();
         }
     }
 
-    void Flinch()
+    public void AddScore()
     {
+        Score?.Invoke();
+    }
+
+    public void Flinch(bool value)
+    {
+        Hit?.Invoke(value);
         impactSFX.Play();
-        anim.SetTrigger("fall");
         isRunning = false;
-        life--;
-
-        GameControl.current.lifePanel.GetChild(life).gameObject.SetActive(false);
-
-        if(life <= 0)
-        {
-            anim.SetBool("dead", true);
-            GameControl.current.Invoke("GameOver", 2);
-
-        }
+        isHit = false;
     }
 
     public void StartRun()
@@ -144,18 +153,22 @@ public class CharacterControl : MonoBehaviour
         anim.SetTrigger("run");
     }
 
-    public void StartRollback()
+    //Di panggil lewat Animatior
+    private void StartRollBack()
     {
         isRollback = true;
-        Invoke("StopRollback", rollbackDuration);
+        StartCoroutine(StopRollBack());
     }
 
-    void StopRollback()
+    private IEnumerator StopRollBack()
     {
+        yield return new WaitForSeconds(rollbackDuration);
         isRollback = false;
+        isStartCountdown = true;
         anim.SetTrigger("idle");
-        GameControl.current.StartCountdown();
-    }
+        Countdown?.Invoke(isStartCountdown);
+    } 
+    
 
     public void PlayStepSFX()
     {

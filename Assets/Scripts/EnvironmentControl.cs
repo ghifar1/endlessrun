@@ -1,34 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnvironmentControl : MonoBehaviour
 {
-    public float moveSpeed;
+    
+
+    [SerializeField] private CharacterControl character;
 
     [Header("Pools")]
-    public Transform middleObstaclePool;
-    public Transform sideObstaclePool;
-    public Transform pointsPool;
-    public Transform platformPool;
+    [SerializeField] private Transform middleObstaclePool;
+    [SerializeField] private Transform sideObstaclePool;
+    [SerializeField] private Transform pointsPool;
+    [SerializeField] private Transform platformPool;
 
     [Header("Objects")]
-    public GameObject[] middleObstacles;
-    public GameObject[] sideObstacles;
-    public GameObject[] points;
+    [SerializeField] private GameObject[] middleObstacles;
+    [SerializeField] private GameObject[] sideObstacles;
+    [SerializeField] private GameObject[] points;
+    
+    Vector3 platformEndPosition,platformStartPosition;
 
-    Vector3 platformEndPosition, platformStartPosition;
+    public float moveSpeed;
 
-
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
         platformStartPosition = transform.GetChild(0).position + new Vector3(0, 0, 10);
         platformEndPosition = transform.GetChild(transform.childCount - 1).position;
 
-        PopulatePool(middleObstaclePool, middleObstacles, 5);
-        PopulatePool(sideObstaclePool, sideObstacles, 10);
-        PopulatePool(pointsPool, points, 5);
+        PopulatePoolCar(middleObstaclePool, middleObstacles, 5);
+        PopulatePoolCar(sideObstaclePool, sideObstacles, 10);
+        PopulatePoolCoin(pointsPool, points, 5);
 
         PopulatePlatformPool(3);
 
@@ -38,24 +39,25 @@ public class EnvironmentControl : MonoBehaviour
     void Update()
     {
         // fungsi jalan maju
-        if(GameControl.current.myChar.isRunning == true)
+        if(character.isRunning)
         {
             for(int i=0; i < transform.childCount; i++)
             {
                 Transform platform = transform.GetChild(i);
+
                 platform.position += Vector3.back * moveSpeed * Time.deltaTime;
 
                 if(platform.position.z <= platformEndPosition.z)
                 {
-                    CleanObject(platform);
-                    platform = SpawnPlatform(platform);
-                    SpawnObject(platform);
+                    //CleanObject(platform);
+                    platform = SpawnPlatform(platform); // newPlatform
+                    SpawnObject(platform); // <<<
                 }
             }
         }
 
         //fungsi jalan mundur
-        if(GameControl.current.myChar.isRollback == true)
+        if(character.isRollback)
         {
             for(int i = transform.childCount -1; i >= 0; i--)
             {
@@ -65,18 +67,18 @@ public class EnvironmentControl : MonoBehaviour
                 {
                     platform.position = transform.GetChild(transform.childCount - 1).position - new Vector3(0, 0, 10);
                     platform.SetAsLastSibling();
-                    CleanObject(platform);
+                    //CleanObject(platform);
 
                 }
             }
         }
     }
 
-    void PopulatePool(Transform pool, GameObject[] objects, int amount)
+    void PopulatePoolCar(Transform pool, GameObject[] objects, int amount)
     {
         for(int i=0; i < objects.Length; i++)
         {
-            for(int j=0; j < amount; j++)
+            for(int j=0; j < amount; j++) 
             {
                 GameObject obj = Instantiate(objects[i], pool);
                 obj.GetComponent<ObjectControl>().pool = pool;
@@ -85,6 +87,19 @@ public class EnvironmentControl : MonoBehaviour
         }
     }
 
+    void PopulatePoolCoin(Transform pool, GameObject[] objects, int amount)
+    {
+        for(int i=0; i < objects.Length; i++)
+        {
+            for(int j=0; j < amount; j++) 
+            {
+                GameObject obj = Instantiate(objects[i], pool);
+                obj.GetComponent<ObjectControl>().OnEnableCoin();   
+                obj.SetActive(false);
+            }
+        }
+    }
+    
     GameObject GetRandomObjectFromPool(Transform pool)
     {
         if(pool.childCount <= 0)
@@ -164,11 +179,8 @@ public class EnvironmentControl : MonoBehaviour
                             spawning.transform.localPosition = new Vector3(0.9f, 0, 0);
                         }
                     break;
-
-
                 }
                 spawning.SetActive(true);
-
             }
         }
 
@@ -179,17 +191,14 @@ public class EnvironmentControl : MonoBehaviour
     {
         for(int i =0; i < transform.childCount; i++)
         {
-            for(int j=0; j < amount; j++)
-            {
-                GameObject obj = Instantiate(transform.GetChild(i).gameObject, platformPool);
-                obj.SetActive(false);
-            }
+            GameObject obj = Instantiate(transform.GetChild(i).gameObject, platformPool);
+            obj.SetActive(false);
         }
     }
 
     void CleanObject(Transform platform)
     {
-        for(int j=platform.GetChild(0).childCount -1; j >= 0; j--)
+        for(int j=platform.GetChild(0).childCount -1; j >= 0; j++)
         {
             Transform obj = platform.GetChild(0).GetChild(j);
             obj.parent = obj.GetComponent<ObjectControl>().pool;
@@ -204,7 +213,7 @@ public class EnvironmentControl : MonoBehaviour
         platform.parent = platformPool;
         platform.gameObject.SetActive(false);
 
-        newPlatform.position = transform.GetChild(0).position + new Vector3(0, 0, 10);
+        newPlatform.position = transform.GetChild(1).position + new Vector3(0, 0, 10);
         newPlatform.SetAsFirstSibling();
         newPlatform.gameObject.SetActive(true);
 

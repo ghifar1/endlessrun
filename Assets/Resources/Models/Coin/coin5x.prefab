@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 160867142945318800}
-  - component: {fileID: 5971619020099984595}
+  - component: {fileID: 7016895408901191732}
   m_Layer: 0
   m_Name: coin5x
   m_TagString: Untagged
@@ -36,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5971619020099984595
+--- !u!114 &7016895408901191732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,22 +45,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 160867142945318801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f44da845b096dd43beabb025d18320d, type: 3}
+  m_Script: {fileID: 11500000, guid: adbe559ccb4765c44a64e19c47a5435a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &5600138795038319160
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3593384011460020517}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25, z: 0.05}
-  m_Center: {x: 0, y: 0, z: 0}
+  pool: {fileID: 0}
+  points: []
 --- !u!65 &4962152677061570027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74,7 +63,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &8704431392384296915
+--- !u!65 &5600138795038319160
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3593384011460020517}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.25, z: 0.05}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &4447302732871356520
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +89,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &4447302732871356520
+--- !u!65 &8704431392384296915
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,7 +141,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &5089261743573712607
+--- !u!65 &3145645901237136669
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +154,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &3145645901237136669
+--- !u!65 &5089261743573712607
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

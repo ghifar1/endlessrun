@@ -1,23 +1,57 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuControl : MonoBehaviour
 {
-    public Text highScoreText;
+    [SerializeField] private GameControl manager;
+    [SerializeField] private Text countDown;
 
-    // Start is called before the first frame update
-    void Start()
+    public Text highScoreText;
+    public Text scoreCountTxt;
+    public Transform lifePanel;
+
+
+
+    private void Awake()
     {
-        highScoreText.text = PlayerPrefs.GetInt("highscore").ToString();
-        Time.timeScale = 1;
+        manager.Score += OnScoreChange;
+        manager.highscore += OnHighScoreChange;
+        manager.StartCountDown += OnCountDownChange;
     }
 
-    // Update is called once per frame
-    public void StartGame()
+	private void OnDestroy()
+	{
+        manager.Score -= OnScoreChange;
+        manager.highscore -= OnHighScoreChange;
+        manager.StartCountDown -= OnCountDownChange;
+    }
+
+	// Update is called once per frame
+	public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
+    }
+    
+    public void OnScoreChange(int newScore)
+    {
+        scoreCountTxt.text = newScore.ToString();
+    }
+
+    private void OnHighScoreChange(string id)
+    {
+       highScoreText.text = PlayerPrefs.GetInt(id).ToString();
+    }
+
+    private void OnCountDownChange(int value)
+    {
+        if (value == 0)
+        {
+            countDown.gameObject.SetActive(false);
+        }
+        countDown.gameObject.SetActive(true);
+        countDown.text = value.ToString();
+
     }
 }

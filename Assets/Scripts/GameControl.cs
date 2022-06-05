@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -7,60 +7,75 @@ using UnityEngine.UI;
 
 public class GameControl : MonoBehaviour
 {
-    public static GameControl current;
-
     //Call class from another class
-    public CharacterControl myChar;
+    // public static CharacterControl character;
+    
+    #region Event
+    public Action<int> Score;
+    public Action<int> CountLife;
+    public Action<int> StartCountDown;
+    public Action<bool> Running;
+    public Action<string> highscore; 
+    #endregion
+    
+    #region Shared Script
+    [SerializeField] private CharacterControl character;
+    [SerializeField] private EnvironmentControl envControl;
+    [SerializeField] private MenuControl menu;
+    #endregion
 
-    [Header("Countdown Properties")]
+    #region Const Variable
+    private const string PLAYERHIGHSCORE = "highscore";
+    private const string deadAnimation = "dead";
+    private const string fallAnimation = "fall";
+    #endregion
 
-    public Text countdownText;
-    public int countdownCount;
-    int currCountdown;
+    #region Variable
 
-    [Header("User Interface")]
-
-    public GameObject pausePanel;
-    public GameObject GameoverPanel;
-    public Transform lifePanel;
-    public Text scoreCountTxt;
     public int score;
 
-    [Header("Audio")]
+    [Header("User Interface")]
+    public GameObject pausePanel;
+    public GameObject GameoverPanel;
 
+    [Header("Audio")]
     public AudioSource bgmSource;
     public AudioClip gameBGM;
     public AudioClip gameOverBGM;
 
-    // Start is called before the first frame update
-    void Start()
+    private int life;
+    private float LastAction;
+    private int countdownCount = 4;
+
+    private bool isDragging = false;
+    private Vector2 beginDragPosition;
+    
+    #endregion
+    
+    private void Awake()
     {
-        current = this;
-        Time.timeScale = 1;
-        StartCountdown();
+        character.Hit += OnHitObstacle;
+        character.Score += AddScore;
+        character.Countdown += OnStartCountdown;
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        StartCoroutine(CountingDown());
         PopulateLifeImage();
         ChangeBGM(gameBGM, true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    float LastAction;
-
+    
     public void Tap()
     {
         if (Time.time - LastAction <= 0.2f) return;
 
         Debug.Log("tap");
-        myChar.Jump();
+        character.Jump();
         LastAction = Time.time;
     }
-
-    bool isDragging = false;
-    Vector2 beginDragPosition;
 
     public void BeginDrag(BaseEventData bed)
     {
@@ -84,21 +99,19 @@ public class GameControl : MonoBehaviour
         if (beginDragPosition.x > endDragPosition.x)
         {
             Debug.Log("Drag ke kri");
-            myChar.Turn(-1);
+            character.Turn(-1);
         }
         else if (beginDragPosition.x < endDragPosition.x)
         {
             Debug.Log("Drag ke kanan");
-            myChar.Turn(1);
+            character.Turn(1);
         }
     }
-
-    public void StartCountdown()
+    
+    private void OnStartCountdown(bool obj)
     {
-        currCountdown = countdownCount;
-        countdownText.text = currCountdown.ToString();
-        countdownText.gameObject.SetActive(true);
-        Invoke("CountingDown", 1);
+        character.isStartCountdown = false;
+        StartCoroutine(CountingDown());
     }
 
     public void GameOver()
@@ -108,27 +121,25 @@ public class GameControl : MonoBehaviour
         SaveScore();
     }
 
-    void CountingDown()
+    private IEnumerator CountingDown()
     {
-        currCountdown--;
-        countdownText.text = currCountdown.ToString();
-        if(currCountdown > 0)
-        {
-            Invoke("CountingDown", 1);
+        while(countdownCount > 0)
+		{
+            if (countdownCount == 0) break;
+            yield return new WaitForSeconds(1);
+            countdownCount--;
+            StartCountDown?.Invoke(countdownCount);
         }
-        else
-        {
-            countdownText.gameObject.SetActive(false);
-            myChar.StartRun();
-        }
+        character.StartRun();
     }
     
 
     public void SaveScore()
     {
-        if (score > PlayerPrefs.GetInt("highscore"))
+        if (score > PlayerPrefs.GetInt(PLAYERHIGHSCORE))
         {
-            PlayerPrefs.SetInt("highscore", score);
+            PlayerPrefs.SetInt(PLAYERHIGHSCORE, score);
+            highscore?.Invoke(PLAYERHIGHSCORE);
             PlayerPrefs.Save();
         }
     }
@@ -157,13 +168,32 @@ public class GameControl : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    void PopulateLifeImage()
+    private void PopulateLifeImage()
     {
-        for (int i = 1; i < myChar.life; i++)
+        for (int i = 1; i < life; i++)
         {
-            GameObject life = Instantiate(lifePanel.transform.GetChild(0).gameObject, lifePanel.transform);
+            GameObject life = Instantiate(menu.lifePanel.transform.GetChild(0).gameObject, menu.lifePanel.transform);
             life.GetComponent<RectTransform>().anchoredPosition = new Vector2(i * 120, 0);
         }
+    }
+
+    private void OnHitObstacle(bool value)
+    {
+        character.anim.SetTrigger(fallAnimation);
+        menu.lifePanel.GetChild(life).gameObject.SetActive(false);
+        
+        if (life == 0)
+        {
+            character.anim.SetBool(deadAnimation, true);
+            GameOver();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        character.Hit -= OnHitObstacle;
+        character.Score -= AddScore;
+        character.Countdown -= OnStartCountdown;
     }
 
     public void ChangeBGM(AudioClip newBGM, bool isLooping)
@@ -172,10 +202,11 @@ public class GameControl : MonoBehaviour
         bgmSource.loop = isLooping;
         bgmSource.Play();
     }
-
-    public void AddScore(int newScore)
+    
+    public void AddScore()
     {
-        score += newScore;
-        scoreCountTxt.text = score.ToString();
+        score++;
+        Score?.Invoke(score);
     }
+
 }
