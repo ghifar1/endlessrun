@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnvironmentControl : MonoBehaviour
 {
     public float moveSpeed;
+    public static EnvironmentControl current;
 
     [Header("Pools")]
     public Transform middleObstaclePool;
@@ -12,19 +13,27 @@ public class EnvironmentControl : MonoBehaviour
     public Transform pointsPool;
     public Transform platformPool;
 
+    [Header("Season Pools")]
+    public string[] seasonNames;
+    public int activeSeasonIndex;
+    public int lastActiveSeasonindex;
+
     [Header("Objects")]
     public GameObject[] middleObstacles;
     public GameObject[] sideObstacles;
     public GameObject[] points;
 
-    public Vector3 platformEndPosition, platformStartPosition;
+    private Vector3 platformEndPosition, platformStartPosition;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        platformStartPosition = transform.GetChild(0).position + new Vector3(0, 0, 10);
-        platformEndPosition = transform.GetChild(transform.childCount - 1).position;
+        current = this;
+        activeSeasonIndex = 0;
+        lastActiveSeasonindex = activeSeasonIndex;
+        platformStartPosition = transform.GetChild(0).position + new Vector3(0, 0, 50);
+        platformEndPosition = transform.GetChild(transform.childCount - 1).position - new Vector3(0,0, 70);
 
         PopulatePool(middleObstaclePool, middleObstacles, 5);
         PopulatePool(sideObstaclePool, sideObstacles, 10);
@@ -49,7 +58,14 @@ public class EnvironmentControl : MonoBehaviour
                 {
                     CleanObject(platform);
                     platform = SpawnPlatform(platform);
-                    SpawnObject(platform);
+
+                    int spawnObjectAmount = Mathf.CeilToInt(moveSpeed / 3);
+
+                    for(int j =0; j < spawnObjectAmount; j++)
+                    {
+                        SpawnObject(platform);
+                    }
+                    
                 }
             }
         }
@@ -63,7 +79,7 @@ public class EnvironmentControl : MonoBehaviour
                 platform.position += Vector3.forward * moveSpeed * Time.deltaTime;
                 if(platform.position.z >= platformStartPosition.z)
                 {
-                    platform.position = transform.GetChild(transform.childCount - 1).position - new Vector3(0, 0, 10);
+                    platform.position = transform.GetChild(transform.childCount - 1).position - new Vector3(0, 0, 50);
                     platform.SetAsLastSibling();
                     CleanObject(platform);
 
@@ -141,29 +157,29 @@ public class EnvironmentControl : MonoBehaviour
                     case 0:
                         if(spawning.tag == "obstacle")
                         {
-                            spawning.transform.localPosition = new Vector3(-1.2f, 0, 0);
+                            spawning.transform.localPosition = new Vector3(-1.5f, 0, Random.Range(-50.0f, 50.0f));
                             spawning.transform.localEulerAngles = new Vector3(0, 160, 0);
 
                         } else
                         {
-                            spawning.transform.localPosition = new Vector3(-0.9f, 0, 0);
+                            spawning.transform.localPosition = new Vector3(-1.0f, 0, Random.Range(-50.0f, 50.0f));
                     
                         }
                     break;
 
                     case 1:
-                        spawning.transform.localPosition = new Vector3(0, 0, 0);
+                        spawning.transform.localPosition = new Vector3(0, 0, Random.Range(-50.0f, 50.0f));
                     break;
 
                     case 2:
                         if(spawning.tag == "obstacle")
                         {
-                            spawning.transform.localPosition = new Vector3(1.2f, 0, 0);
+                            spawning.transform.localPosition = new Vector3(1.5f, 0, Random.Range(-50.0f, 50.0f));
                             spawning.transform.localEulerAngles = new Vector3(0, 220, 0);
 
                         } else
                         {
-                            spawning.transform.localPosition = new Vector3(0.9f, 0, 0);
+                            spawning.transform.localPosition = new Vector3(1.0f, 0, Random.Range(-50.0f, 50.0f));
                         }
                     break;
 
@@ -179,14 +195,39 @@ public class EnvironmentControl : MonoBehaviour
 
     void PopulatePlatformPool(int amount)
     {
-        for(int i =0; i < transform.childCount; i++)
+        int totalPlatform = platformPool.childCount;
+        for (int i=0; i < totalPlatform; i++)
         {
-            for(int j=0; j < amount; j++)
+            Transform seasonObject = platformPool.GetChild(i);
+            Debug.Log("INI PLATFORM");
+            Debug.Log(seasonObject.name);
+
+            int totalChildSeason = seasonObject.childCount;
+            for(int j=0; j < totalChildSeason; j++)
             {
-                GameObject obj = Instantiate(transform.GetChild(i).gameObject, platformPool);
+                //Debug.Log(seasonObject.name + " ANAK KE " + j);
+                //GameObject obj = seasonObject.GetChild(j).gameObject;
+                //Debug.Log(obj.name);
+
+                GameObject obj = Instantiate(seasonObject.GetChild(j).gameObject, seasonObject);
                 obj.SetActive(false);
+                //for (int k=0; k < amount; k++)
+                //{
+                //    //GameObject obj = Instantiate(seasonObject.GetChild(k).gameObject, seasonObject);
+                //    //obj.SetActive(false);
+                //}
             }
+            
         }
+
+        //for(int i =0; i < transform.childCount; i++)
+        //{
+        //    for(int j=0; j < amount; j++)
+        //    {
+        //        GameObject obj = Instantiate(transform.GetChild(i).gameObject, platformPool);
+        //        obj.SetActive(false);
+        //    }
+        //}
     }
 
     void CleanObject(Transform platform)
@@ -201,12 +242,22 @@ public class EnvironmentControl : MonoBehaviour
 
     Transform SpawnPlatform(Transform platform)
     {
-        Transform newPlatform = platformPool.GetChild(Random.Range(0, platformPool.childCount));
+        Debug.Log("Active season:" + activeSeasonIndex);
+        Transform seasonPool = platformPool.GetChild(activeSeasonIndex);
+        Transform newPlatform = seasonPool.GetChild(Random.Range(0, seasonPool.childCount));
+        //Transform newPlatform = platformPool.GetChild(Random.Range(0, platformPool.childCount));
         newPlatform.parent = transform;
-        platform.parent = platformPool;
+        if(platform.tag == "summer")
+        {
+            platform.parent = platformPool.GetChild(0);
+        } else
+        {
+            platform.parent = platformPool.GetChild(1);
+        }
+        //platform.parent = seasonPool;
         platform.gameObject.SetActive(false);
 
-        newPlatform.position = transform.GetChild(0).position + new Vector3(0, 0, 10);
+        newPlatform.position = transform.GetChild(0).position + new Vector3(0, 0, 50);
         newPlatform.SetAsFirstSibling();
         newPlatform.gameObject.SetActive(true);
 

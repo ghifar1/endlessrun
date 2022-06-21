@@ -102,9 +102,11 @@ public class CharacterControl : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "obstacle")
+        if (collision.collider.tag == "obstacle")
         {
-            if(transform.position.y < 1)
+
+
+            if (transform.position.y < 1)
             {
                 Flinch();
             }
@@ -130,7 +132,22 @@ public class CharacterControl : MonoBehaviour
 
         GameControl.current.lifePanel.GetChild(life).gameObject.SetActive(false);
 
-        if(life <= 0)
+        if (EnvironmentControl.current.moveSpeed > 10)
+        {
+            float newSpeed =  -5;
+            if (EnvironmentControl.current.moveSpeed - newSpeed < 10)
+            {
+                newSpeed = 10;
+                EnvironmentControl.current.moveSpeed = newSpeed;
+            }
+            else
+            {
+                EnvironmentControl.current.moveSpeed += newSpeed;
+            }
+
+        }
+
+        if (life <= 0)
         {
             anim.SetBool("dead", true);
             GameControl.current.Invoke("GameOver", 2);

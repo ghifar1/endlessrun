@@ -30,7 +30,17 @@ public class GameControl : MonoBehaviour
 
     public AudioSource bgmSource;
     public AudioClip gameBGM;
+    public AudioClip dessertBGM;
     public AudioClip gameOverBGM;
+
+    [Header("Move Speed By Time")]
+
+    public float maxSpeed;
+    public float nextSpeedAdd;
+    public float nextTimeAdd;
+    public float speedTimeStepper;
+
+    private float timeStamp = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +55,52 @@ public class GameControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
+    }
+
+    int UniqueRandom()
+    {
+        int rand = Random.Range(0, EnvironmentControl.current.seasonNames.Length);
+        if (rand == EnvironmentControl.current.lastActiveSeasonindex)
+        {
+            return this.UniqueRandom();
+        } else
+        {
+            return rand;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        timeStamp += Time.deltaTime;
+        //Debug.Log(Mathf.Ceil(timeStamp));
+        if (EnvironmentControl.current.moveSpeed <= maxSpeed && timeStamp > speedTimeStepper)
+        {
+            EnvironmentControl.current.moveSpeed += nextSpeedAdd;
+            speedTimeStepper += nextTimeAdd;
+        }
+
+        if (Mathf.Ceil(timeStamp) % 60 == 0)
+        {
+            int rand = UniqueRandom();
+            Debug.Log("Change Season" + rand);
+            EnvironmentControl.current.activeSeasonIndex = rand;
+            return;
+        }
+
+        if(EnvironmentControl.current.lastActiveSeasonindex != EnvironmentControl.current.activeSeasonIndex)
+        {
+            int activeSeason = EnvironmentControl.current.activeSeasonIndex;
+            EnvironmentControl.current.lastActiveSeasonindex = activeSeason;
+            if(activeSeason == 0)
+            {
+                ChangeBGM(gameBGM, true);
+            } else
+            {
+                ChangeBGM(dessertBGM, true);
+            }
+        }
     }
 
     float LastAction;
@@ -54,7 +109,7 @@ public class GameControl : MonoBehaviour
     {
         if (Time.time - LastAction <= 0.2f) return;
 
-        Debug.Log("tap");
+        //Debug.Log("tap");
         myChar.Jump();
         LastAction = Time.time;
     }
@@ -66,7 +121,7 @@ public class GameControl : MonoBehaviour
     {
         if (Time.time - LastAction <= 0.2f) return;
 
-        Debug.Log("BeginDrag");
+        //Debug.Log("BeginDrag");
         PointerEventData ped = bed as PointerEventData;
         beginDragPosition = ped.position;
         LastAction = Time.time;
@@ -77,18 +132,18 @@ public class GameControl : MonoBehaviour
     {
         if (isDragging == false) return;
 
-        Debug.Log("EndDrag");
+        //Debug.Log("EndDrag");
         PointerEventData ped = bed as PointerEventData;
         Vector2 endDragPosition = ped.position;
 
         if (beginDragPosition.x > endDragPosition.x)
         {
-            Debug.Log("Drag ke kri");
+            //Debug.Log("Drag ke kri");
             myChar.Turn(-1);
         }
         else if (beginDragPosition.x < endDragPosition.x)
         {
-            Debug.Log("Drag ke kanan");
+            //Debug.Log("Drag ke kanan");
             myChar.Turn(1);
         }
     }
