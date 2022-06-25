@@ -247,13 +247,26 @@ public class EnvironmentControl : MonoBehaviour
         Transform newPlatform = seasonPool.GetChild(Random.Range(0, seasonPool.childCount));
         //Transform newPlatform = platformPool.GetChild(Random.Range(0, platformPool.childCount));
         newPlatform.parent = transform;
-        if(platform.tag == "summer")
+        switch(platform.tag)
         {
-            platform.parent = platformPool.GetChild(0);
-        } else
-        {
-            platform.parent = platformPool.GetChild(1);
+            case "summer":
+                platform.parent = platformPool.GetChild(0);
+                break;
+            case "dessert":
+                platform.parent = platformPool.GetChild(1);
+                break;
+            case "beach":
+                platform.parent = platformPool.GetChild(2);
+                break;
+
         }
+        //if(platform.tag == "summer")
+        //{
+        //    platform.parent = platformPool.GetChild(0);
+        //} else
+        //{
+        //    platform.parent = platformPool.GetChild(1);
+        //}
         //platform.parent = seasonPool;
         platform.gameObject.SetActive(false);
 

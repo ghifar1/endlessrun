@@ -31,6 +31,7 @@ public class GameControl : MonoBehaviour
     public AudioSource bgmSource;
     public AudioClip gameBGM;
     public AudioClip dessertBGM;
+    public AudioClip beachBGM;
     public AudioClip gameOverBGM;
 
     [Header("Move Speed By Time")]
@@ -62,13 +63,14 @@ public class GameControl : MonoBehaviour
     int UniqueRandom()
     {
         int rand = Random.Range(0, EnvironmentControl.current.seasonNames.Length);
-        if (rand == EnvironmentControl.current.lastActiveSeasonindex)
-        {
-            return this.UniqueRandom();
-        } else
-        {
-            return rand;
-        }
+        return rand;
+        //if (rand == EnvironmentControl.current.lastActiveSeasonindex)
+        //{
+        //    return this.UniqueRandom();
+        //} else
+        //{
+        //    return rand;
+        //}
     }
 
     private void FixedUpdate()
@@ -93,12 +95,17 @@ public class GameControl : MonoBehaviour
         {
             int activeSeason = EnvironmentControl.current.activeSeasonIndex;
             EnvironmentControl.current.lastActiveSeasonindex = activeSeason;
-            if(activeSeason == 0)
+            switch(activeSeason)
             {
-                ChangeBGM(gameBGM, true);
-            } else
-            {
-                ChangeBGM(dessertBGM, true);
+                case 0:
+                    ChangeBGM(gameBGM, true);
+                    break;
+                case 1:
+                    ChangeBGM(dessertBGM, true);
+                    break;
+                case 2:
+                    ChangeBGM(beachBGM, true);
+                    break;
             }
         }
     }

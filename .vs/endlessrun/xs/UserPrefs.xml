@@ -1,19 +1,16 @@
 ﻿<Properties StartupConfiguration="{136845A4-917A-58CB-E145-0E7C973ECD49}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EnvironmentControl.cs">
     <Files>
-      <File FileName="Assets/Scripts/EnvironmentControl.cs" Line="34" Column="51" />
-      <File FileName="Assets/Scripts/GameControl.cs" Line="146" Column="42" />
-      <File FileName="Assets/Scripts/AudioScript.cs" Line="14" Column="17" />
-      <File FileName="Assets/Scripts/CharacterControl.cs" Line="105" Column="28" />
+      <File FileName="Assets/Scripts/EnvironmentControl.cs" Line="60" Column="1" />
+      <File FileName="Assets/Scripts/GameControl.cs" />
+      <File FileName="Assets/Scripts/CharacterControl.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="endlessrun" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Scripts" expanded="True">
-                <Node name="GameControl.cs" selected="True" />
-              </Node>
+            <Node name="Assets" expanded="True" selected="True">
+              <Node name="Scripts" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -22,7 +19,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="f2b955b6-6d08-479d-8e0d-c1752d55b787" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="737fde2a-59cc-4370-854a-03095f543d60" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
