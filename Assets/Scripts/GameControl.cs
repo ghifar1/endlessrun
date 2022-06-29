@@ -56,7 +56,7 @@ public class GameControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
 
     }
 
@@ -91,11 +91,11 @@ public class GameControl : MonoBehaviour
             return;
         }
 
-        if(EnvironmentControl.current.lastActiveSeasonindex != EnvironmentControl.current.activeSeasonIndex)
+        if (EnvironmentControl.current.lastActiveSeasonindex != EnvironmentControl.current.activeSeasonIndex)
         {
             int activeSeason = EnvironmentControl.current.activeSeasonIndex;
             EnvironmentControl.current.lastActiveSeasonindex = activeSeason;
-            switch(activeSeason)
+            switch (activeSeason)
             {
                 case 0:
                     ChangeBGM(gameBGM, true);
@@ -174,7 +174,7 @@ public class GameControl : MonoBehaviour
     {
         currCountdown--;
         countdownText.text = currCountdown.ToString();
-        if(currCountdown > 0)
+        if (currCountdown > 0)
         {
             Invoke("CountingDown", 1);
         }
@@ -184,7 +184,7 @@ public class GameControl : MonoBehaviour
             myChar.StartRun();
         }
     }
-    
+
 
     public void SaveScore()
     {
@@ -198,10 +198,11 @@ public class GameControl : MonoBehaviour
     public void OnApplicationPause(bool pause)
     {
         pausePanel.SetActive(pause);
-        if(pause == true)
+        if (pause == true)
         {
             Time.timeScale = 0;
-        } else
+        }
+        else
         {
             Time.timeScale = 1;
         }
@@ -224,7 +225,7 @@ public class GameControl : MonoBehaviour
         for (int i = 1; i < myChar.life; i++)
         {
             GameObject life = Instantiate(lifePanel.transform.GetChild(0).gameObject, lifePanel.transform);
-            life.GetComponent<RectTransform>().anchoredPosition = new Vector2(i * 120, 0);
+            life.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, i * -120);
         }
     }
 
@@ -239,5 +240,26 @@ public class GameControl : MonoBehaviour
     {
         score += newScore;
         scoreCountTxt.text = score.ToString();
+        if (score > 10 && score <= 20)
+        {
+            scoreCountTxt.color = new Color32(1, 1, 222, 255);
+        }
+        else if (score > 20 && score <= 30)
+        {
+            scoreCountTxt.color = new Color32(3, 138, 255, 255);
+        }
+        else if (score > 30 && score <= 70)
+        {
+            scoreCountTxt.color = new Color32(238, 238, 155, 255);
+        }
+        else if (score > 70 && score <= 100)
+        {
+            scoreCountTxt.color = new Color32(245, 202, 123, 255);
+        }
+        else if (score > 100)
+        {
+            scoreCountTxt.color = new Color32(244, 113, 116,255);
+        }
+
     }
 }

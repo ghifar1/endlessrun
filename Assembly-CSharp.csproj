@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets/Scripts/EnvironmentControl.cs" />
     <Compile Include="Assets/AudioScript.cs" />
+    <Compile Include="Assets/GrassRoadRace/Script/CameraMove.cs" />
     <Compile Include="Assets/Supercyan Character Pack Free Sample/Scripts/DemoFree.cs" />
     <Compile Include="Assets/Supercyan Character Pack Free Sample/Scripts/SimpleSampleCharacterControl.cs" />
     <Compile Include="Assets/Scripts/ObjectControl.cs" />
@@ -65,15 +66,44 @@
     <Compile Include="Assets/Scripts/MenuControl.cs" />
     <Compile Include="Assets/Scripts/CharacterControl.cs" />
     <Compile Include="Assets/Supercyan Character Pack Free Sample/Scripts/FreeCameraLogic.cs" />
-    <Compile Include="Assets/GrassRoadRace/Script/CameraMove.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/GUIControllerFlying.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/3.Christmas/ChristmasController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/GUIControllerChristmas.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/1.Locomotion/QueryLocomotionCamera.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/1.Locomotion/LocomotionGUI.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/1.Locomotion/QueryLocomotionController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/QuerySoundController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/QueryEmotionalController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/2.Helloween/GhostController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/CameraAction.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/GUIController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/QueryMechanimController.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/GUIControllerAttack.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/GUIControllerHalloween.cs" />
+    <Compile Include="Assets/query-chan-model/PQAssets/Query-Chan/Scripts/QueryAnimationController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/Free Low Poly Desert Pack/Materials/Shaders/Vertex_Color_Unlit.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_TransBlue.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Fur.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Halloween.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Skin.shader" />
     <None Include="Assets/Resources/Skybox/Shaders/Skybox - Cubemap Extended.shader" />
     <None Include="Assets/Free Low Poly Desert Pack/Materials/Shaders/Vertex_Color_Basic.shader" />
     <None Include="Assets/Supercyan Character Pack Free Sample/Shaders/Legacy/CelShader.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Documents/ReadMe.txt" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Standard.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Ribbon.shader" />
     <None Include="Assets/Supercyan Character Pack Free Sample/Shaders/SupercyanShader.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_WrappingPaper.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_HW_Ghost.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_TreeLight.shader" />
+    <None Include="Assets/Day-Night Skyboxes/Textures/Readme for Assigning.txt" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_VertexShadow.shader" />
+    <None Include="Assets/Day-Night Skyboxes/readme.txt" />
     <None Include="Assets/Supercyan Character Pack Free Sample/Shaders/SupercyanShaderLighting.cginc" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_Snow.shader" />
+    <None Include="Assets/query-chan-model/PQAssets/Query-Chan/Shaders/PQ_velvet.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -310,11 +340,11 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>/Applications/Unity/Hub/Editor/2021.3.4f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>Library/PackageCache/com.unity.analytics@3.5.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Editor.dll</HintPath>
@@ -694,29 +724,38 @@
     <Reference Include="mscorlib">
       <HintPath>/Applications/Unity/Hub/Editor/2021.3.4f1/Unity.app/Contents/NetStandard/compat/2.1.0/shims/netfx/mscorlib.dll</HintPath>
     </Reference>
+    <Reference Include="Purchasing.Common">
+      <HintPath>Library/ScriptAssemblies/Purchasing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Services.Core.Analytics">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Analytics.dll</HintPath>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Services.Core.Environments">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Environments.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing.SecurityStub">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityStub.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -727,65 +766,56 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Analytics">
+      <HintPath>Library/ScriptAssemblies/Analytics.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Purchasing.Common">
-      <HintPath>Library/ScriptAssemblies/Purchasing.Common.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing.SecurityStub">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityStub.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements.Editor">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.Codeless">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.Codeless.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Monetization">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
+    <Reference Include="Unity.Services.Core">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Services.Core.Analytics">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Analytics.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Purchasing.SecurityCore">
       <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityCore.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing.Stores">
-      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.Stores.dll</HintPath>
-    </Reference>
-    <Reference Include="Analytics">
-      <HintPath>Library/ScriptAssemblies/Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    <Reference Include="UnityEngine.Purchasing.Codeless">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.Codeless.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
       <HintPath>Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Services.Core.Environments">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Environments.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing.Stores">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Purchasing.Stores.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
+      <HintPath>Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Monetization">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SpatialTracking">
+      <HintPath>Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Advertisements.Editor">
+      <HintPath>Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,13 @@ public class EnvironmentControl : MonoBehaviour
     public float moveSpeed;
     public static EnvironmentControl current;
 
+    [Header("Skybox")]
+    public Material day;
+    public Material night;
+
+    [Header("lighting")]
+    public Light lighting;
+
     [Header("Pools")]
     public Transform middleObstaclePool;
     public Transform sideObstaclePool;
@@ -24,12 +31,15 @@ public class EnvironmentControl : MonoBehaviour
     public GameObject[] points;
 
     private Vector3 platformEndPosition, platformStartPosition;
-
+    private float timer = 0.0f;
+    private int secondChanger = 0;
+    private bool isDay = true;
 
     // Start is called before the first frame update
     void Start()
     {
         current = this;
+        RenderSettings.skybox = day;
         activeSeasonIndex = 0;
         lastActiveSeasonindex = activeSeasonIndex;
         platformStartPosition = transform.GetChild(0).position + new Vector3(0, 0, 50);
@@ -43,9 +53,61 @@ public class EnvironmentControl : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        timer += Time.deltaTime;
+        int second = Mathf.CeilToInt(timer % 60);
+        if(second == 60)
+        {
+            isDay = !isDay;
+            timer = 0.0f;
+        }
+
+        if(second != secondChanger)
+        {
+            //update by second
+            secondChanger = second;
+            Debug.Log(Mathf.CeilToInt(timer % 60));
+            if(isDay)
+            {
+                if(second == 40)
+                {
+                    RenderSettings.skybox = night;
+                }
+                Vector3 rotation = lighting.transform.rotation.eulerAngles;
+                rotation.x -= 1;
+                lighting.transform.rotation = Quaternion.Euler(rotation);
+                Color32 color = RenderSettings.fogColor;
+                color.r -= 3;
+                color.g -= 3;
+                color.b -= 3;
+                RenderSettings.fogColor = color;
+
+            } else
+            {
+                if (second == 25)
+                {
+                    RenderSettings.skybox = day;
+                }
+                Vector3 rotation = lighting.transform.rotation.eulerAngles;
+                rotation.x += 1;
+                lighting.transform.rotation = Quaternion.Euler(rotation);
+                Color32 color = RenderSettings.fogColor;
+                color.r += 3;
+                color.g += 3;
+                color.b += 3;
+                RenderSettings.fogColor = color;
+            }
+        }
+
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        
+
         // fungsi jalan maju
         if(GameControl.current.myChar.isRunning == true)
         {
