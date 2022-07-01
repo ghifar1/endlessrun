@@ -83,7 +83,7 @@ public class GameControl : MonoBehaviour
             speedTimeStepper += nextTimeAdd;
         }
 
-        if (Mathf.Ceil(timeStamp) % 60 == 0)
+        if (Mathf.Ceil(timeStamp) % 30 == 0)
         {
             int rand = UniqueRandom();
             Debug.Log("Change Season" + rand);
@@ -211,13 +211,13 @@ public class GameControl : MonoBehaviour
     public void Retry()
     {
         SaveScore();
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("GameScene");
     }
 
     public void Exit()
     {
         SaveScore();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MenuScene");
     }
 
     void PopulateLifeImage()

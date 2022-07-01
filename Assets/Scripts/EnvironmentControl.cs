@@ -32,7 +32,8 @@ public class EnvironmentControl : MonoBehaviour
 
     private Vector3 platformEndPosition, platformStartPosition;
     private float timer = 0.0f;
-    private int secondChanger = 0;
+    public int secondChanger = 0;
+    public int second = 0;
     private bool isDay = true;
 
     // Start is called before the first frame update
@@ -56,7 +57,7 @@ public class EnvironmentControl : MonoBehaviour
     private void FixedUpdate()
     {
         timer += Time.deltaTime;
-        int second = Mathf.CeilToInt(timer % 60);
+        second = Mathf.CeilToInt(timer % 60);
         if(second == 60)
         {
             isDay = !isDay;
@@ -152,10 +153,9 @@ public class EnvironmentControl : MonoBehaviour
 
     void PopulatePool(Transform pool, GameObject[] objects, int amount)
     {
-        
-        for(int i=0; i < objects.Length; i++)
+        for (int i = 0; i < objects.Length; i++)
         {
-            for(int j=0; j < amount; j++)
+            for (int j = 0; j < amount; j++)
             {
                 GameObject obj = Instantiate(objects[i], pool);
                 Debug.Log(obj);
